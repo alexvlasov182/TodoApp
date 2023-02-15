@@ -44,5 +44,25 @@ public class TodoController : ControllerBase
 
     return Ok(item);
   }
+
+  [HttpPut("{id}")]
+  public async Task<IActionResult> UpdateItem(int id, ItemData item)
+  {
+    if (id != item.Id)
+      return BadRequest();
+    var existItem = await _context.Items.FirstOrDefaultAsync(x => x.Id == id);
+
+    if (existItem == null)
+      return NotFound();
+
+    existItem.Title = item.Title;
+    existItem.Description = item.Description;
+    existItem.Done = item.Done;
+
+    // Implement the changes on the database level
+    await _context.SaveChangesAsync();
+
+    return NoContent();
+  }
 }
 
