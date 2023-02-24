@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Data;
@@ -8,6 +9,7 @@ namespace TodoApp.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class TodoController : ControllerBase
 {
   private readonly ApiDbContext _context;
@@ -26,6 +28,7 @@ public class TodoController : ControllerBase
   {
     if (ModelState.IsValid)
     {
+
       await _context.Items.AddAsync(data);
       await _context.SaveChangesAsync();
 
